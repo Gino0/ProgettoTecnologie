@@ -5,10 +5,23 @@
  */
 package progetto;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author ginisi_gabriele
  */
-public class CConnessione {
+public class CConnessione extends Thread {
+    private gestione gestore;
+
+    public CConnessione() {
+        this.gestore = null;
+    }
     
+    public CConnessione(gestione gestore) {
+        this.gestore = gestore;
+    }
+
 }

@@ -5,15 +5,14 @@
  */
 package progetto;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 /**
  *
- * @author ginisi_gabriele
+ * @author Guepe
  */
-public class TAscolta extends Thread {
+public class gestione {
 
-    
-    @Override
-    public void run() {
-        super.run(); //To change body of generated methods, choose Tools | Templates.
-    }
 }

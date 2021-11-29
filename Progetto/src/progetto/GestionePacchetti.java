@@ -8,48 +8,35 @@ package progetto;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.Arrays;
 
 /**
  *
  * @author ginisi_gabriele
  */
 public class GestionePacchetti {
-        private DatagramSocket server;
-    DatagramPacket pacchetto;
-    String messaggioRicevuto;
-    String votoClasse;
-
+   DatagramSocket gestore;
+    
     public GestionePacchetti() throws SocketException {
-        server = new DatagramSocket(2003);
+        this.gestore = new DatagramSocket(2003);
     }
-
-    public String ricevi() throws IOException {
-
-        byte[] buffer = new byte[1500];
-
-        pacchetto = new DatagramPacket(buffer, buffer.length);
-
-        server.receive(pacchetto);
-
-        byte[] dataReceived = pacchetto.getData(); // copia del buffer dichiarato sopra
-
-        messaggioRicevuto = new String(dataReceived, 0, pacchetto.getLength());
-
-        return messaggioRicevuto;
+    
+    public void Invio(String messaggio, InetAddress indirizzo) throws IOException{
+        byte[] bufferRisposta = messaggio.getBytes();
+        DatagramPacket pacchettoRisposta = new DatagramPacket(bufferRisposta, bufferRisposta.length);
+        pacchettoRisposta.setAddress(indirizzo);
+        pacchettoRisposta.setPort(2003); 
+        gestore.send(pacchettoRisposta);
     }
-
-    public void invia(String messaggio) throws IOException {
-        String risposta = messaggio;
-
-        byte[] responseBuffer = risposta.getBytes();
-
-        DatagramPacket pacchettoRisposta = new DatagramPacket(responseBuffer, responseBuffer.length);
-
-        pacchettoRisposta.setAddress(pacchetto.getAddress());
-
-        pacchettoRisposta.setPort(pacchetto.getPort());
-
-        server.send(pacchettoRisposta);
+    
+    public String Ricevi() throws IOException{
+        byte[] bufferRicevuto = new byte[1500];
+        DatagramPacket pacchettoRicevuto = new DatagramPacket(bufferRicevuto, bufferRicevuto.length);
+        gestore.receive(pacchettoRicevuto);
+        byte[] bufferDatiRicevuto = pacchettoRicevuto.getData();
+        String datiStringa = new String(Arrays.copyOfRange(bufferDatiRicevuto, 0, pacchettoRicevuto.getLength()));
+        return datiStringa;
     }
 }
